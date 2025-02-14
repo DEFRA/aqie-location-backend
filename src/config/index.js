@@ -30,7 +30,7 @@ const config = convict({
   serviceName: {
     doc: 'Api Service Name',
     format: String,
-    default: 'aqie-location-backend'
+    default: 'aiqe-dataservice-backend'
   },
   root: {
     doc: 'Project root',
@@ -51,6 +51,19 @@ const config = convict({
     doc: 'If this application running in the test environment',
     format: Boolean,
     default: isTest
+  },
+  osNamesApiKey: {
+    doc: 'OS Name Places key',
+    format: '*',
+    sensitive: true,
+    default: 'vvR3FiaNjSWCnFzSKBst23TX6efl0oL9',
+    env: 'OS_NAMES_API_KEY'
+  },
+  osNamesApiUrl: {
+    doc: 'OS Name Places url',
+    format: String,
+    default: 'https://api.os.uk/search/names/v1/find?query=',
+    env: 'OS_NAMES_API_URL'
   },
   log: {
     enabled: {
@@ -88,7 +101,7 @@ const config = convict({
   mongoDatabase: {
     doc: 'database for mongodb',
     format: String,
-    default: 'aqie-location-backend',
+    default: 'aiqe-dataservice-backend',
     env: 'MONGO_DATABASE'
   },
   httpProxy: {
@@ -96,7 +109,14 @@ const config = convict({
     format: String,
     nullable: true,
     default: null,
-    env: 'HTTP_PROXY'
+    env: 'CDP_HTTP_PROXY'
+  },
+  httpsProxy: {
+    doc: 'HTTPS Proxy',
+    format: String,
+    nullable: true,
+    default: null,
+    env: 'CDP_HTTPS_PROXY'
   },
   isSecureContextEnabled: {
     doc: 'Enable Secure Context',
@@ -117,6 +137,12 @@ const config = convict({
       default: 'x-cdp-request-id',
       env: 'TRACING_HEADER'
     }
+  },
+  allowOriginUrl: {
+    doc: 'URL to Access-Control-Allow-Origin',
+    format: String,
+    default: '',
+    env: 'ACCESS_CONTROL_ALLOW_ORIGIN_URL'
   }
 })
 
