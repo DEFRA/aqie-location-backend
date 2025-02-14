@@ -1,7 +1,7 @@
 {
   "name": "aqie-location-backend",
   "version": "0.0.0",
-  "description": "CDP Backend Template",
+  "description": "aqie-location-backend",
   "main": ".server/index.js",
   "type": "module",
   "engines": {
