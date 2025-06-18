@@ -37,7 +37,5 @@ async function fetchOSPlaces(request) {
   } else {
     return 'no data found'
   }
-
-  // return {getOSPlaces}
 }
 export { fetchOSPlaces }
