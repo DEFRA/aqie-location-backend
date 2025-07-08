@@ -22,14 +22,14 @@ describe('convertStringToHyphenatedLowercaseWords', () => {
 })
 
 describe('processMatches', () => {
-  const baseEntry = {
-    GAZETTEER_ENTRY: {
-      NAME1: 'London',
-      NAME2: 'Central',
-      DISTRICT_BOROUGH: 'Westminster',
-      COUNTY_UNITARY: 'Greater London'
-    }
-  }
+  // const baseEntry = {
+  //   GAZETTEER_ENTRY: {
+  //     NAME1: 'London',
+  //     NAME2: 'Central',
+  //     DISTRICT_BOROUGH: 'Westminster',
+  //     COUNTY_UNITARY: 'Greater London'
+  //   }
+  // }
 
   //   it('should return filtered matches based on userLocation match', () => {
   //     const matches = [baseEntry]
