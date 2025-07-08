@@ -1,4 +1,6 @@
 // Helper function to process matches
+
+import { statusCodes } from '~/src/api/common/constants/status-codes.js'
 const processMatches = (matches, locationNameOrPostcode, userLocation) => {
   const partialPostcodePattern = /^([A-Z]{1,2}\d[A-Z\d]?)$/
   const newMatches = matches.filter((item) => {
@@ -13,7 +15,7 @@ const processMatches = (matches, locationNameOrPostcode, userLocation) => {
   if (
     partialPostcodePattern.test(locationNameOrPostcode.toUpperCase()) &&
     matches.length > 0 &&
-    locationNameOrPostcode.length <= 3
+    locationNameOrPostcode.length <= statusCodes.locationNameOrPostcodelength
   ) {
     if (matches[0].GAZETTEER_ENTRY.NAME2) {
       matches[0].GAZETTEER_ENTRY.NAME1 = matches[0].GAZETTEER_ENTRY.NAME2

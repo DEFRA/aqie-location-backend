@@ -1,7 +1,7 @@
 import { config } from '~/src/config/index.js'
 import { createLogger } from '~/src/api/common/helpers/logging/logger.js'
 import { catchProxyFetchError } from '~/src/api/common/helpers/catch-proxy-fetch-error.js'
-
+import { statusCodes } from '~/src/api/getosname/helper/constants.js'
 async function fetchData(locationType, userLocation) {
   const options = {
     method: 'get',
@@ -34,7 +34,7 @@ async function fetchData(locationType, userLocation) {
       options,
       !shouldCallApi
     )
-    if (statusCodeOSPlace !== 200) {
+    if (statusCodeOSPlace !== statusCodes.ok) {
       logger.error(
         `Error fetching statusCodeOSPlace data: ${statusCodeOSPlace}`
       )
