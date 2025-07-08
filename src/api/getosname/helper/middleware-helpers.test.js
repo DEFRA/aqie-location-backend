@@ -38,13 +38,13 @@ describe('processMatches', () => {
   //     expect(result[0].GAZETTEER_ENTRY.ID).toBe('central_westminster')
   //   })
 
-  it.skip('should handle partial postcode logic and override NAME1', () => {
-    const matches = [JSON.parse(JSON.stringify(baseEntry))]
-    const result = processMatches(matches, 'W1', 'Central')
-    expect(result).toHaveLength(1)
-    expect(result[0].GAZETTEER_ENTRY.NAME1).toBe('Central')
-    expect(result[0].GAZETTEER_ENTRY.ID).toBe('central_westminster')
-  })
+  // it.skip('should handle partial postcode logic and override NAME1', () => {
+  //   const matches = [JSON.parse(JSON.stringify(baseEntry))]
+  //   const result = processMatches(matches, 'W1', 'Central')
+  //   expect(result).toHaveLength(1)
+  //   expect(result[0].GAZETTEER_ENTRY.NAME1).toBe('Central')
+  //   expect(result[0].GAZETTEER_ENTRY.ID).toBe('central_westminster')
+  // })
 
   it('should handle partial postcode with no NAME2', () => {
     const entry = {
@@ -72,19 +72,19 @@ describe('processMatches', () => {
   //     expect(result[0].GAZETTEER_ENTRY.ID).toBe('cowley_oxfordshire')
   //   })
 
-  it.skip('should handle entries with no NAME2 and no DISTRICT_BOROUGH', () => {
-    const entry = {
-      GAZETTEER_ENTRY: {
-        NAME1: 'Reading',
-        COUNTY_UNITARY: 'Berkshire'
-      }
-    }
-    const result = processMatches([entry], 'Reading', 'Reading')
+  // it.skip('should handle entries with no NAME2 and no DISTRICT_BOROUGH', () => {
+  //   const entry = {
+  //     GAZETTEER_ENTRY: {
+  //       NAME1: 'Reading',
+  //       COUNTY_UNITARY: 'Berkshire'
+  //     }
+  //   }
+  //   const result = processMatches([entry], 'Reading', 'Reading')
 
-    expect(result.length).toBeGreaterThan(0)
-    expect(result[0]).toHaveProperty('GAZETTEER_ENTRY')
-    expect(result[0].GAZETTEER_ENTRY.ID).toBe('reading_berkshire')
-  })
+  //   expect(result.length).toBeGreaterThan(0)
+  //   expect(result[0]).toHaveProperty('GAZETTEER_ENTRY')
+  //   expect(result[0].GAZETTEER_ENTRY.ID).toBe('reading_berkshire')
+  // })
 
   it('should return empty array if no matches found', () => {
     const entry = {
@@ -99,21 +99,21 @@ describe('processMatches', () => {
     expect(result).toEqual([])
   })
 
-  it.skip('should handle undefined NAME2 gracefully', () => {
-    const entry = {
-      GAZETTEER_ENTRY: {
-        NAME1: 'York',
-        DISTRICT_BOROUGH: 'Yorkshire',
-        COUNTY_UNITARY: 'North Yorkshire'
-      }
-    }
-    const result = processMatches([entry], 'York', 'York')
-    expect(result[0].GAZETTEER_ENTRY.ID).toBe('york_yorkshire')
-  })
+  // it.skip('should handle undefined NAME2 gracefully', () => {
+  //   const entry = {
+  //     GAZETTEER_ENTRY: {
+  //       NAME1: 'York',
+  //       DISTRICT_BOROUGH: 'Yorkshire',
+  //       COUNTY_UNITARY: 'North Yorkshire'
+  //     }
+  //   }
+  //   const result = processMatches([entry], 'York', 'York')
+  //   expect(result[0].GAZETTEER_ENTRY.ID).toBe('york_yorkshire')
+  // })
 
-  it.skip('should handle missing GAZETTEER_ENTRY gracefully', () => {
-    const entry = {} // No GAZETTEER_ENTRY
-    const result = processMatches([entry], 'Test', 'Test')
-    expect(result).toEqual([])
-  })
+  // it.skip('should handle missing GAZETTEER_ENTRY gracefully', () => {
+  //   const entry = {} // No GAZETTEER_ENTRY
+  //   const result = processMatches([entry], 'Test', 'Test')
+  //   expect(result).toEqual([])
+  // })
 })
