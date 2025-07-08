@@ -12,12 +12,17 @@ async function fetchOSPlaces(request) {
     const locationNameOrPostcode = request.params.userLocation //= 'DA16 1LT'//'London'
     const userLocation = request.params.userLocation.toUpperCase() //= 'DA16 1LT'//'LONDON'
 
-    const { getOSPlaces } = await fetchData(
+    // const { getOSPlaces } = await fetchData(
+    const data = await fetchData(
       locationType,
       locationNameOrPostcode,
       request,
       'h'
     )
+    if (!data?.getOSPlaces) {
+      return undefined
+    }
+    const { getOSPlaces } = data
     if (locationType === 'uk-location') {
       // let { results } = getOSPlaces
 
