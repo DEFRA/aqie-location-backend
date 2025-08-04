@@ -18,19 +18,21 @@ describe('fetchOSPlaces', () => {
   test('should return "no data found" when request.payload is null', async () => {
     const result = await fetchOSPlaces({ payload: null })
     expect(result).toBe('no data found')
-    expect(mockLogger.info).toHaveBeenCalledWith(expect.stringContaining('Invalid input'))
+    expect(mockLogger.info).toHaveBeenCalledWith(
+      expect.stringContaining('Invalid input')
+    )
   })
 
-  test.each([
-    [undefined],
-    [''],
-    ['   '],
-    [{}]
-  ])('should return "no data found" for blank userLocation: %p', async (input) => {
-    const result = await fetchOSPlaces({ payload: { userLocation: input } })
-    expect(result).toBe('no data found')
-    expect(mockLogger.info).toHaveBeenCalledWith(expect.stringContaining('Invalid input'))
-  })
+  test.each([[undefined], [''], ['   '], [{}]])(
+    'should return "no data found" for blank userLocation: %p',
+    async (input) => {
+      const result = await fetchOSPlaces({ payload: { userLocation: input } })
+      expect(result).toBe('no data found')
+      expect(mockLogger.info).toHaveBeenCalledWith(
+        expect.stringContaining('Invalid input')
+      )
+    }
+  )
 
   test('should return undefined if fetchData returns no getOSPlaces', async () => {
     fetchData.mockResolvedValue({})
@@ -72,16 +74,15 @@ describe('fetchOSPlaces', () => {
     processMatches.mockReturnValue(mockResults)
 
     await fetchOSPlaces({ payload: { userLocation: 'london' } })
-    expect(processMatches).toHaveBeenCalledWith(
-      mockResults,
-      'london',
-      'LONDON'
-    )
+    expect(processMatches).toHaveBeenCalledWith(mockResults, 'london', 'LONDON')
   })
+
   test('should log valid input', async () => {
     fetchData.mockResolvedValue({ getOSPlaces: { results: [] } })
     await fetchOSPlaces({ payload: { userLocation: 'London' } })
-    expect(mockLogger.info).toHaveBeenCalledWith(expect.stringContaining('Valid input'))
+    expect(mockLogger.info).toHaveBeenCalledWith(
+      expect.stringContaining('Valid input')
+    )
   })
 
   test('should call fetchData with correct parameters', async () => {
@@ -94,6 +95,7 @@ describe('fetchOSPlaces', () => {
       'h'
     )
   })
+
   test('should log valid input and return selected matches when all conditions are met', async () => {
     const mockResults = [
       { id: 1, name: 'Place A' },
@@ -102,40 +104,48 @@ describe('fetchOSPlaces', () => {
     const processed = [{ id: 1 }, { id: 2 }]
     fetchData.mockResolvedValue({ getOSPlaces: { results: mockResults } })
     processMatches.mockReturnValue(processed)
-  
-    const result = await fetchOSPlaces({ payload: { userLocation: 'DA16 1LT' } })
-  
+
+    const result = await fetchOSPlaces({
+      payload: { userLocation: 'DA16 1LT' }
+    })
+
     expect(mockLogger.info).toHaveBeenCalledWith(
       expect.stringContaining('Valid input: userLocation are provided')
     )
     expect(result).toEqual(processed)
   })
+
   test('should log valid input and return selected matches', async () => {
     const mockResults = [{ id: 1, name: 'Place A' }]
     const mockProcessed = [{ id: 1, name: 'Place A' }]
-  
+
     fetchData.mockResolvedValue({ getOSPlaces: { results: mockResults } })
     processMatches.mockReturnValue(mockProcessed)
-  
-    const result = await fetchOSPlaces({ payload: { userLocation: 'TestCity' } })
-  
+
+    const result = await fetchOSPlaces({
+      payload: { userLocation: 'TestCity' }
+    })
+
     // Line 20
     expect(mockLogger.info).toHaveBeenCalledWith(
       expect.stringContaining('Valid input: userLocation are provided')
     )
-  
+
     // Line 45
     expect(result).toEqual(mockProcessed)
   })
-  
+
   test('should handle userLocation as an object', async () => {
     const mockResults = [{ id: 1, name: 'Place A' }]
     fetchData.mockResolvedValue({ getOSPlaces: { results: mockResults } })
     processMatches.mockReturnValue(mockResults)
 
-    const result = await fetchOSPlaces({ payload: { userLocation: { userLocation: 'London' } } })
+    const result = await fetchOSPlaces({
+      payload: { userLocation: { userLocation: 'London' } }
+    })
     expect(result).toEqual(mockResults)
   })
+
   test('should handle userLocation as a string', async () => {
     const mockResults = [{ id: 1, name: 'Place A' }]
     fetchData.mockResolvedValue({ getOSPlaces: { results: mockResults } })
@@ -144,14 +154,20 @@ describe('fetchOSPlaces', () => {
     const result = await fetchOSPlaces({ payload: { userLocation: 'London' } })
     expect(result).toEqual(mockResults)
   })
+
   test('should handle userLocation as an empty string', async () => {
     const result = await fetchOSPlaces({ payload: { userLocation: '' } })
     expect(result).toBe('no data found')
-    expect(mockLogger.info).toHaveBeenCalledWith(expect.stringContaining('Invalid input'))
+    expect(mockLogger.info).toHaveBeenCalledWith(
+      expect.stringContaining('Invalid input')
+    )
   })
+
   test('should handle userLocation as an object with no userLocation property', async () => {
     const result = await fetchOSPlaces({ payload: { userLocation: {} } })
     expect(result).toBe('no data found')
-    expect(mockLogger.info).toHaveBeenCalledWith(expect.stringContaining('Invalid input'))    
+    expect(mockLogger.info).toHaveBeenCalledWith(
+      expect.stringContaining('Invalid input')
+    )
   })
 })
