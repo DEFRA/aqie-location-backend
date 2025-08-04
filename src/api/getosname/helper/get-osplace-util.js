@@ -1,17 +1,36 @@
 import { fetchData } from '~/src/api/getosname/helper/fetch-data.js'
 import { processMatches } from '~/src/api/getosname/helper/middleware-helpers.js'
+import { createLogger } from '~/src/api/common/helpers/logging/logger.js'
 
 async function fetchOSPlaces(request) {
-  if (
-    request.params.userLocation !== '' &&
-    request.params.userLocation !== null &&
-    request.params.userLocation !== "''"
-  ) {
-    // const url = config.get('osNamesApiUrl')
-    const locationType = 'uk-location'
-    const locationNameOrPostcode = request.params.userLocation //= 'DA16 1LT'//'London'
-    const userLocation = request.params.userLocation.toUpperCase() //= 'DA16 1LT'//'LONDON'
+  const logger = createLogger()
+  let { userLocation } = request.payload || {}
+  // write test cases to check for the above condition
+  if (typeof userLocation === 'object') {
+    userLocation = userLocation.userLocation || ''
+  } else if (typeof userLocation === 'string') {
+    userLocation = userLocation.trim()
+  } else {
+    userLocation = ''
+  }
 
+  // Helper function to check if a value is null, undefined, or blank
+  const isBlank = (value) => {
+    return (
+      value === null ||
+      value === undefined ||
+      (typeof value === 'string' && value.trim() === '') ||
+      (typeof value === 'object' && Object.keys(value).length === 0)
+    )
+  }
+  if (isBlank(userLocation)) {
+    logger.info(`Invalid input: userLocation is blank : ${userLocation}`)
+    return 'no data found'
+  } else {
+    logger.info(`Valid input: userLocation are provided : ${userLocation}`)
+    const locationType = 'uk-location'
+    const locationNameOrPostcode = userLocation //= 'DA16 1LT'//'LONDON'
+    userLocation = userLocation.toUpperCase()
     // const { getOSPlaces } = await fetchData(
     const data = await fetchData(
       locationType,
@@ -39,8 +58,6 @@ async function fetchOSPlaces(request) {
       )
       return selectedMatches
     }
-  } else {
-    return 'no data found'
   }
 }
 export { fetchOSPlaces }

@@ -6,8 +6,8 @@ const osnameplaces = {
     register: (server) => {
       server.route([
         {
-          method: 'GET',
-          path: '/osnameplaces/userLocation={userLocation}',
+          method: 'POST',
+          path: '/osnameplaces',
           ...osplaceController
         }
       ])
