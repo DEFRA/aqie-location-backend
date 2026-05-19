@@ -31,7 +31,6 @@ async function fetchOSPlaces(request) {
     const locationType = 'uk-location'
     const locationNameOrPostcode = userLocation //= 'DA16 1LT'//'LONDON'
     userLocation = userLocation.toUpperCase()
-    // const { getOSPlaces } = await fetchData(
     const data = await fetchData(
       locationType,
       locationNameOrPostcode,
@@ -43,8 +42,6 @@ async function fetchOSPlaces(request) {
     }
     const { getOSPlaces } = data
     if (locationType === 'uk-location') {
-      // let { results } = getOSPlaces
-
       // Remove duplicates from the results array
       if (getOSPlaces?.results) {
         getOSPlaces.results = Array.from(
