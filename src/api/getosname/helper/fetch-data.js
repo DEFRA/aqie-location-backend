@@ -26,9 +26,7 @@ async function fetchData(locationType, userLocation) {
     const shouldCallApi = symbolsArr.some((symbol) =>
       userLocation.includes(symbol)
     )
-    logger.info(
-      `osPlace data requested osNamesApiUrlFull: ${osNamesApiUrlFull}`
-    )
+    logger.info(`osPlace data requested osNamesApiUrl: ${osNamesApiUrl}`)
     const [statusCodeOSPlace, getOSPlaces] = await catchProxyFetchError(
       osNamesApiUrlFull,
       options,
