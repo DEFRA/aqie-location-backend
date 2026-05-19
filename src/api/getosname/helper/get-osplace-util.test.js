@@ -155,7 +155,6 @@ describe('fetchOSPlaces', () => {
       expect(processMatches).not.toHaveBeenCalled()
     })
 
-    // Line 45 – selectedMatches is returned from inside the if (locationType === 'uk-location') block
     test('returns the value from processMatches (line 45 – return selectedMatches)', async () => {
       const processed = [
         { id: 1, name: 'Place A' },
