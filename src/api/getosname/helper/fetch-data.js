@@ -32,12 +32,12 @@ async function fetchData(locationType, userLocation) {
       options,
       !shouldCallApi
     )
-    if (statusCodeOSPlace !== statusCodes.ok) {
+    if (statusCodeOSPlace === statusCodes.ok) {
+      logger.info(`getOSPlaces data fetched:`)
+    } else {
       logger.error(
         `Error fetching statusCodeOSPlace data: ${statusCodeOSPlace}`
       )
-    } else {
-      logger.info(`getOSPlaces data fetched:`)
     }
     return { getOSPlaces }
   }

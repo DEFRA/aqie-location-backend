@@ -66,9 +66,9 @@ const processMatches = (matches, locationNameOrPostcode, userLocation) => {
 }
 
 const convertStringToHyphenatedLowercaseWords = (input) => {
-  const removedHyphens = input.replace(/ - /g, ' ')
+  const removedHyphens = input.replaceAll(/ - /g, ' ')
   // Remove commas, convert to lowercase, and split the string into words
-  const words = removedHyphens.replace(/,/g, '').toLowerCase().split(' ')
+  const words = removedHyphens.replaceAll(/,/g, '').toLowerCase().split(' ')
 
   // Join the words with hyphens
   return words.join('-')
