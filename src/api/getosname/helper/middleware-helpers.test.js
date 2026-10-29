@@ -119,6 +119,13 @@ describe('processMatches', () => {
     expect(result).toEqual([])
   })
 
+  it.each([undefined, null, 'wrong postcode', {}])(
+    'should return an empty list when matches is not an array (%p)',
+    (matches) => {
+      expect(processMatches(matches, 'asdfghjkl', 'ASDFGHJKL')).toEqual([])
+    }
+  )
+
   it('should not match if locationNameOrPostcode is too long', () => {
     const matches = [
       {

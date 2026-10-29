@@ -3,6 +3,11 @@
 import { statusCodes } from '~/src/api/common/constants/status-codes.js'
 
 const processMatches = (matches, locationNameOrPostcode, userLocation) => {
+  // `results` can be missing from the OS Names reply (e.g. no hits); that means no matches, not an error
+  if (!Array.isArray(matches)) {
+    return []
+  }
+
   const partialPostcodePattern = /^([A-Z]{1,2}\d[A-Z\d]?)$/
   const normalizedUserLocation = userLocation
     .toUpperCase()
