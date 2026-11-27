@@ -85,4 +85,70 @@ describe('catchProxyFetchError', () => {
     )
     expect(result).toEqual([error])
   })
+
+  it('should sanitize key from absolute URL in info log', async () => {
+    const safeData = { ok: true }
+    const urlWithKey = 'https://api.example.com/data?key=secret&foo=bar'
+    proxyFetch.mockResolvedValue({
+      status: 200,
+      ok: true,
+      json: jest.fn().mockResolvedValue(safeData)
+    })
+
+    await catchProxyFetchError(urlWithKey, options, true)
+
+    const infoMessage = mockInfo.mock.calls[0][0]
+    expect(infoMessage).toContain('https://api.example.com/data?foo=bar')
+    expect(infoMessage).not.toContain('key=secret')
+  })
+
+  it('should sanitize key from absolute URL in non-ok logs and error message', async () => {
+    const urlWithKey = 'https://api.example.com/data?foo=bar&key=secret'
+    proxyFetch.mockResolvedValue({
+      status: 500,
+      ok: false,
+      json: jest.fn()
+    })
+
+    const result = await catchProxyFetchError(urlWithKey, options, true)
+
+    const failedInfo = mockInfo.mock.calls
+      .map((c) => c[0])
+      .find((m) => m.includes('Failed to fetch data from'))
+    const errorLog = mockError.mock.calls[0][0]
+
+    expect(failedInfo).toContain('https://api.example.com/data?foo=bar')
+    expect(failedInfo).not.toContain('key=')
+    expect(errorLog).toContain('https://api.example.com/data?foo=bar')
+    expect(errorLog).not.toContain('key=')
+    expect(result[0].message).toContain('https://api.example.com/data?foo=bar')
+    expect(result[0].message).not.toContain('key=')
+  })
+
+  it('should sanitize key from relative URL using fallback branch', async () => {
+    const relativeUrl = '/api/data?key=secret&foo=1'
+    const error = new Error('Downstream failure')
+    proxyFetch.mockRejectedValue(error)
+
+    const result = await catchProxyFetchError(relativeUrl, options, true)
+
+    expect(result).toEqual([error])
+    const errorLog = mockError.mock.calls[0][0]
+    const normalizedErrorLog = errorLog.replace('?&', '?')
+    expect(normalizedErrorLog).toContain('/api/data?foo=1')
+    expect(normalizedErrorLog).not.toContain('key=')
+  })
+
+  it('should remove trailing query separator when relative URL only has key', async () => {
+    const relativeUrl = '/api/data?key=secret'
+    const error = new Error('Downstream failure')
+    proxyFetch.mockRejectedValue(error)
+
+    await catchProxyFetchError(relativeUrl, options, true)
+
+    const errorLog = mockError.mock.calls[0][0]
+    expect(errorLog).toContain('/api/data: Downstream failure')
+    expect(errorLog).not.toContain('?key=')
+    expect(errorLog).not.toContain('/api/data?')
+  })
 })
