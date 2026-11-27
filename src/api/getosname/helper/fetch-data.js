@@ -5,7 +5,7 @@ import { statusCodes } from '~/src/api/getosname/helper/constants.js'
 async function fetchData(locationType, userLocation) {
   const options = {
     method: 'get',
-    headers: { 'Content-Type': 'text/json', preserveWhitespace: true }
+    headers: {'Content-Type': 'text/json', preserveWhitespace: true}
   }
   const logger = createLogger()
   if (locationType === 'uk-location') {
